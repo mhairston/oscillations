@@ -27,9 +27,9 @@ function setup() {
   col1 = choose(drawingColors);
   //orbiters = OrbiterFactory.create(30, pal, drawingColors, layer);
   orbiters = [
-    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.75, 0.75, 100, 100),
-    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.5, 0.25, 100, 200),
-    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.25, 0.125, 200, 100)
+    new Orbiter(loc, 10, col1, col1, drawingLayer, 0.75, 0.75, 100, 100),
+    new Orbiter(loc, 10, col1, col1, drawingLayer, 0.5, 0.25, 100, 200),
+    new Orbiter(loc, 10, col1, col1, drawingLayer, 0.25, 0.125, 200, 100)
   ];
 }
 
@@ -69,13 +69,8 @@ function updateAll() {
   push();
   noStroke();
   orbiters.forEach((item, i) => {
-    item.update();
-    var cycle = dc.sin(0.01 * i/10,0,true);
-    var factor = i/w * 1.5 * cycle;
-    var sz = Math.pow((2 - factor),3);
+    item.render(true, false);
     d.push();
-    d.fill(item.drawCol.toHslString());
-    d.ellipse(item.loc.x, item.loc.y,sz,sz);
     drawChiaroscuro(d);
     d.pop();
   });
@@ -86,26 +81,27 @@ function drawConnections(d) {
   d.strokeWeight(1);
   d.stroke(255,0.07);
   d.line(
-    orbiters[0].loc.x + orbiters[0].offset().x,
-    orbiters[0].loc.y + orbiters[0].offset().y,
-    orbiters[1].loc.x + orbiters[1].offset().x,
-    orbiters[1].loc.y + orbiters[1].offset().y
+    orbiters[0].currentPosition().x,
+    orbiters[0].currentPosition().y,
+    orbiters[1].currentPosition().x,
+    orbiters[1].currentPosition().y
   );
   d.stroke(0);
   d.line(
-    orbiters[0].loc.x + orbiters[0].offset().x,
-    orbiters[0].loc.y + orbiters[0].offset().y,
-    orbiters[2].loc.x + orbiters[2].offset().x,
-    orbiters[2].loc.y + orbiters[2].offset().y
+    orbiters[0].currentPosition().x,
+    orbiters[0].currentPosition().y,
+    orbiters[2].currentPosition().x,
+    orbiters[2].currentPosition().y
   );
 }
 
 function drawChiaroscuro(d) {
-  if (coin(0.04)) {
+  var t = dc.seconds();
+  if (t % 16 < 0.2) {
     col = (col === 0) ? 255 : 0;
   }
   d.noStroke();
-  d.fill(col,0.07);
+  d.fill(col,0.01);
   d.triangle(
     orbiters[0].currentPosition().x,
     orbiters[0].currentPosition().y,

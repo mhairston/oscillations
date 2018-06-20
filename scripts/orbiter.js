@@ -12,29 +12,25 @@ class Orbiter {
     this.orbitalMagY = omy;
   }
 
-  render(locOffset) {
+  render(showLoc = true, drawIt = true) {
     var d = this.layer;
     var where = this.currentPosition();
     var cx = where.x;
     var cy = where.y;
-    push();
-    fill(tinycolor(this.col).setAlpha(0.5).toHslString());
-    translate(cx, cy);
-    ellipse(0, 0, this.size, this.size);
-    pop();
-
-    d.push();
-    d.translate(cx, cy);
-    d.fill(tinycolor(this.drawingCol).setAlpha(0.5).toHslString());
-    d.ellipse(0, 0, this.size/10, this.size/10);
-    d.pop();
-  }
-
-  update() {
-    push();
-    angleMode(DEGREES);
-    this.render();
-    pop();
+    if (showLoc) {
+      push();
+      fill(tinycolor(this.col).setAlpha(0.5).toHslString());
+      translate(cx, cy);
+      ellipse(0, 0, this.size, this.size);
+      pop();
+    }
+    if (drawIt) {
+      d.push();
+      d.translate(cx, cy);
+      d.fill(tinycolor(this.drawingCol).setAlpha(0.5).toHslString());
+      d.ellipse(0, 0, this.size/10, this.size/10);
+      d.pop();
+    }
   }
 
   offset() {
