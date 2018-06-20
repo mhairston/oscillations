@@ -6,7 +6,7 @@ var sk = {
 var doLoop = true;
 var ds = Drift.Seedy;
 var dc = Drift.Cycles;
-var hw, hh, fr, gl = 0;
+var hw, hh, fr, gl = 0, col = 0;
 var drawingColors, drawingLayer, orbiters;
 
 function setup() {
@@ -101,8 +101,11 @@ function drawConnections(d) {
 }
 
 function drawChiaroscuro(d) {
+  if (coin(0.04)) {
+    col = (col === 0) ? 255 : 0;
+  }
   d.noStroke();
-  d.fill(255,0.07);
+  d.fill(col,0.07);
   d.triangle(
     orbiters[0].currentPosition().x,
     orbiters[0].currentPosition().y,
