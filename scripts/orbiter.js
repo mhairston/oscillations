@@ -14,9 +14,9 @@ class Orbiter {
 
   render(locOffset) {
     var d = this.layer;
-    var locOffset = this.offset();
-    var cx = this.loc.x + locOffset.x;
-    var cy = this.loc.y + locOffset.y;
+    var where = this.currentPosition();
+    var cx = where.x;
+    var cy = where.y;
     push();
     fill(tinycolor(this.col).setAlpha(0.5).toHslString());
     translate(cx, cy);
@@ -42,5 +42,9 @@ class Orbiter {
       Drift.Cycles.sin(this.orbitalFreqX, 0) * this.orbitalMagX,
       Drift.Cycles.cos(this.orbitalFreqY, 0) * this.orbitalMagY
     );
+  }
+
+  currentPosition() {
+    return p5.Vector.add(this.loc, this.offset());
   }
 }

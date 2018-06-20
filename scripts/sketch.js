@@ -11,9 +11,9 @@ var drawingColors, drawingLayer, orbiters;
 
 function setup() {
   var loc, col1;
+  pixelDensity(1);
   theCanvas = createCanvas(windowWidth, windowHeight);
   theCanvas.parent('canvas-container');
-  pixelDensity(1);
   colorMode(HSB, 360, 100, 100, 1);
   angleMode(DEGREES);
   if (!doLoop) { noLoop(); }
@@ -70,31 +70,45 @@ function updateAll() {
   noStroke();
   orbiters.forEach((item, i) => {
     item.update();
-
     var cycle = dc.sin(0.01 * i/10,0,true);
     var factor = i/w * 1.5 * cycle;
     var sz = Math.pow((2 - factor),3);
     d.push();
     d.fill(item.drawCol.toHslString());
     d.ellipse(item.loc.x, item.loc.y,sz,sz);
+    drawChiaroscuro(d);
     d.pop();
-
   });
-  d.push();
-  d.stroke(255);
+  pop();
+}
+
+function drawConnections(d) {
   d.strokeWeight(1);
+  d.stroke(255,0.07);
   d.line(
     orbiters[0].loc.x + orbiters[0].offset().x,
     orbiters[0].loc.y + orbiters[0].offset().y,
     orbiters[1].loc.x + orbiters[1].offset().x,
     orbiters[1].loc.y + orbiters[1].offset().y
   );
+  d.stroke(0);
   d.line(
     orbiters[0].loc.x + orbiters[0].offset().x,
     orbiters[0].loc.y + orbiters[0].offset().y,
     orbiters[2].loc.x + orbiters[2].offset().x,
     orbiters[2].loc.y + orbiters[2].offset().y
   );
-  d.pop();
-  pop();
+}
+
+function drawChiaroscuro(d) {
+  d.noStroke();
+  d.fill(255,0.07);
+  d.triangle(
+    orbiters[0].currentPosition().x,
+    orbiters[0].currentPosition().y,
+    orbiters[1].currentPosition().x,
+    orbiters[1].currentPosition().y,
+    orbiters[2].currentPosition().x,
+    orbiters[2].currentPosition().y
+  );
 }
