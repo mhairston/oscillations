@@ -27,7 +27,9 @@ function setup() {
   col1 = choose(drawingColors);
   //orbiters = OrbiterFactory.create(30, pal, drawingColors, layer);
   orbiters = [
-    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.5, 0.25, 100, 200)
+    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.75, 0.75, 100, 100),
+    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.5, 0.25, 100, 200),
+    new Orbiter(loc, 30, col1, col1, drawingLayer, 0.25, 0.125, 200, 100)
   ];
 }
 
@@ -78,6 +80,21 @@ function updateAll() {
     d.pop();
 
   });
-  var lozSize = rri(40,500);
+  d.push();
+  d.stroke(255);
+  d.strokeWeight(1);
+  d.line(
+    orbiters[0].loc.x + orbiters[0].offset().x,
+    orbiters[0].loc.y + orbiters[0].offset().y,
+    orbiters[1].loc.x + orbiters[1].offset().x,
+    orbiters[1].loc.y + orbiters[1].offset().y
+  );
+  d.line(
+    orbiters[0].loc.x + orbiters[0].offset().x,
+    orbiters[0].loc.y + orbiters[0].offset().y,
+    orbiters[2].loc.x + orbiters[2].offset().x,
+    orbiters[2].loc.y + orbiters[2].offset().y
+  );
+  d.pop();
   pop();
 }
