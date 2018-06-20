@@ -1,32 +1,46 @@
-class Orbiter extends Sprite {
-  constructor(loc, size, vel, col, drawCol, wangle) {
-    super(loc, size);
-    this.vel = vel;
+class Orbiter {
+  constructor(loc, size, col, drawCol, layer,
+              ofx = 1, ofy = 1, omx = 100, omy = 100) {
+    this.loc = loc;
+    this.size = size;
     this.col = col;
     this.drawCol = drawCol;
-    this.wangle = wangle;
+    this.layer = layer;
+    this.orbitalFreqX = ofx;
+    this.orbitalFreqY = ofy;
+    this.orbitalMagX = omx;
+    this.orbitalMagY = omy;
   }
 
-  render() {
+  render(locOffset) {
+    var d = this.layer;
+    var locOffset = this.offset();
+    var cx = this.loc.x + locOffset.x;
+    var cy = this.loc.y + locOffset.y;
     push();
-    fill(this.col.toHslString());
-    translate(this.loc.x, this.loc.y);
+    fill(tinycolor(this.col).setAlpha(0.5).toHslString());
+    translate(cx, cy);
     ellipse(0, 0, this.size, this.size);
     pop();
+
+    d.push();
+    d.translate(cx, cy);
+    d.fill(tinycolor(this.drawingCol).setAlpha(0.5).toHslString());
+    d.ellipse(0, 0, this.size/10, this.size/10);
+    d.pop();
   }
 
   update() {
     push();
     angleMode(DEGREES);
-    this.vel.rotate(choose([0 - this.wangle, this.wangle]));
-    this.loc.add(this.vel);
     this.render();
-    this.wrap();
     pop();
   }
 
-  wrap() {
-    this.loc.x = this.loc.x % (width + this.size);
-    this.loc.y = this.loc.y % (height + this.size);
+  offset() {
+    return new p5.Vector(
+      Drift.Cycles.sin(this.orbitalFreqX, 0) * this.orbitalMagX,
+      Drift.Cycles.cos(this.orbitalFreqY, 0) * this.orbitalMagY
+    );
   }
 }
