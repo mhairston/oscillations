@@ -27,10 +27,10 @@ function setup() {
   col1 = choose(drawingColors);
   //orbiters = OrbiterFactory.create(30, pal, drawingColors, layer);
   orbiters = [
+    //new Orbiter(loc, 10, col1, col1, drawingLayer,
+      //0.75, 0.75, 0, 0, -100, -100),
     new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.75, 0.75, 0, 0, -100, -100),
-    new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.5, 0.25, 0, 0, 100, 200),
+      0.96, 0.48, 0, 0, 100, 200),
     new Orbiter(loc, 10, col1, col1, drawingLayer,
       0.5, 1, 0, TAU/4, 200, 100)
   ];
@@ -76,6 +76,7 @@ function updateAll() {
     item.render(true, true);
     d.push();
     drawChiaroscuro(d);
+    drawConnections(d);
     d.pop();
   });
   pop();
@@ -91,6 +92,7 @@ function drawConnections(d) {
       orbiters[1].currentPosition().x,
       orbiters[1].currentPosition().y
     );
+  } else if (orbiters.length > 2) {
     d.stroke(0);
     d.line(
       orbiters[0].currentPosition().x,
@@ -102,7 +104,7 @@ function drawConnections(d) {
 }
 
 function drawChiaroscuro(d) {
-  if (orbiters.length > 1) {
+  if (orbiters.length > 2) {
     var t = dc.seconds();
     if (t % 16 < 0.2) {
       col = (col === 0) ? 255 : 0;
