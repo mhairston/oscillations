@@ -6,7 +6,7 @@ var sk = {
 var doLoop = true;
 var ds = Drift.Seedy;
 var dc = Drift.Cycles;
-var hw, hh, fr, gl = 0, col = 0;
+var hw, hh, fr, gl = 0, col = 0, hue1 = 0;
 var drawingColors, drawingLayer, orbiters;
 
 function setup() {
@@ -34,15 +34,17 @@ function setup() {
     new Orbiter(loc, 10, col1, col1, drawingLayer,
       0.5, 1, 0, TAU/4, 200, 100)
   ];
+  hue1 = rr(360);
+  sat1 = rr(10,70);
+  bri1 = rr(20,60);
 }
 
 function draw() {
-  background(50);
+  background(hue1,sat1,bri1);
   updateAll();
 }
 
 function initSketch() {
-  var baseHue = rr(360);
   pal = Drift.Color.choosePalette().map((col) => {
     return tinycolor(col);
   });
