@@ -1,6 +1,6 @@
 class Orbiter {
   constructor(loc, size, col, drawCol, layer,
-              ofx = 1, ofy = 1, omx = 100, omy = 100) {
+              ofx = 1, ofy = 1, opx = 0, opy = 0, omx = 100, omy = 100) {
     this.loc = loc;
     this.size = size;
     this.col = col;
@@ -8,6 +8,8 @@ class Orbiter {
     this.layer = layer;
     this.orbitalFreqX = ofx;
     this.orbitalFreqY = ofy;
+    this.orbitalStartPhaseX = opx;
+    this.orbitalStartPhaseY = opy;
     this.orbitalMagX = omx;
     this.orbitalMagY = omy;
   }
@@ -35,8 +37,10 @@ class Orbiter {
 
   offset() {
     return new p5.Vector(
-      Drift.Cycles.sin(this.orbitalFreqX, 0) * this.orbitalMagX,
-      Drift.Cycles.cos(this.orbitalFreqY, 0) * this.orbitalMagY
+      Drift.Cycles.sin(this.orbitalFreqX, this.orbitalStartPhaseX)
+        * this.orbitalMagX,
+      Drift.Cycles.cos(this.orbitalFreqY, this.orbitalStartPhaseY)
+        * this.orbitalMagY
     );
   }
 

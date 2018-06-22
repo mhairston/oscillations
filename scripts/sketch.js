@@ -27,9 +27,12 @@ function setup() {
   col1 = choose(drawingColors);
   //orbiters = OrbiterFactory.create(30, pal, drawingColors, layer);
   orbiters = [
-    new Orbiter(loc, 10, col1, col1, drawingLayer, 0.75, 0.75, 100, 100),
-    new Orbiter(loc, 10, col1, col1, drawingLayer, 0.5, 0.25, 100, 200),
-    new Orbiter(loc, 10, col1, col1, drawingLayer, 0.25, 0.125, 200, 100)
+    new Orbiter(loc, 10, col1, col1, drawingLayer,
+      0.75, 0.75, 0, 0, -100, -100),
+    new Orbiter(loc, 10, col1, col1, drawingLayer,
+      0.5, 0.25, 0, 0, 100, 200),
+    new Orbiter(loc, 10, col1, col1, drawingLayer,
+      0.5, 1, 0, TAU/4, 200, 100)
   ];
 }
 
@@ -58,7 +61,6 @@ function createDrawing() {
 }
 
 function updateAll() {
-  var w = orbiters.length;
   var d = drawingLayer;
   translate(hw,hh);
   scale(1.3);
@@ -69,7 +71,7 @@ function updateAll() {
   push();
   noStroke();
   orbiters.forEach((item, i) => {
-    item.render(true, false);
+    item.render(true, true);
     d.push();
     drawChiaroscuro(d);
     d.pop();
@@ -78,36 +80,40 @@ function updateAll() {
 }
 
 function drawConnections(d) {
-  d.strokeWeight(1);
-  d.stroke(255,0.07);
-  d.line(
-    orbiters[0].currentPosition().x,
-    orbiters[0].currentPosition().y,
-    orbiters[1].currentPosition().x,
-    orbiters[1].currentPosition().y
-  );
-  d.stroke(0);
-  d.line(
-    orbiters[0].currentPosition().x,
-    orbiters[0].currentPosition().y,
-    orbiters[2].currentPosition().x,
-    orbiters[2].currentPosition().y
-  );
+  if (orbiters.length > 1) {
+    d.strokeWeight(1);
+    d.stroke(255,0.07);
+    d.line(
+      orbiters[0].currentPosition().x,
+      orbiters[0].currentPosition().y,
+      orbiters[1].currentPosition().x,
+      orbiters[1].currentPosition().y
+    );
+    d.stroke(0);
+    d.line(
+      orbiters[0].currentPosition().x,
+      orbiters[0].currentPosition().y,
+      orbiters[2].currentPosition().x,
+      orbiters[2].currentPosition().y
+    );
+  }
 }
 
 function drawChiaroscuro(d) {
-  var t = dc.seconds();
-  if (t % 16 < 0.2) {
-    col = (col === 0) ? 255 : 0;
+  if (orbiters.length > 1) {
+    var t = dc.seconds();
+    if (t % 16 < 0.2) {
+      col = (col === 0) ? 255 : 0;
+    }
+    d.noStroke();
+    d.fill(col,0.01);
+    d.triangle(
+      orbiters[0].currentPosition().x,
+      orbiters[0].currentPosition().y,
+      orbiters[1].currentPosition().x,
+      orbiters[1].currentPosition().y,
+      orbiters[2].currentPosition().x,
+      orbiters[2].currentPosition().y
+    );
   }
-  d.noStroke();
-  d.fill(col,0.01);
-  d.triangle(
-    orbiters[0].currentPosition().x,
-    orbiters[0].currentPosition().y,
-    orbiters[1].currentPosition().x,
-    orbiters[1].currentPosition().y,
-    orbiters[2].currentPosition().x,
-    orbiters[2].currentPosition().y
-  );
 }
