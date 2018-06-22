@@ -27,12 +27,12 @@ function setup() {
   col1 = choose(drawingColors);
   //orbiters = OrbiterFactory.create(30, pal, drawingColors, layer);
   orbiters = [
-    //new Orbiter(loc, 10, col1, col1, drawingLayer,
-      //0.75, 0.75, 0, 0, -100, -100),
     new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.96, 0.48, 0, 0, 100, 200),
+      0.74, 0.76, 0, 0, -150, -150),
     new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.5, 1, 0, TAU/4, 200, 100)
+      0.96, 0.48, 0, 0, 150, 300),
+    new Orbiter(loc, 10, col1, col1, drawingLayer,
+      0.5, 1, 0, TAU/4, 300, 150)
   ];
   hue1 = rr(360);
   sat1 = rr(10,70);
@@ -64,9 +64,6 @@ function createDrawing() {
 
 function updateAll() {
   var d = drawingLayer;
-  translate(hw,hh);
-  scale(1.3);
-  translate(-hw,-hh);
   tint(255, 0.8);
   image(d,0,0,d.width,d.height);
   // Draw orbiters & trails:
@@ -92,7 +89,8 @@ function drawConnections(d) {
       orbiters[1].currentPosition().x,
       orbiters[1].currentPosition().y
     );
-  } else if (orbiters.length > 2) {
+  }
+  if (orbiters.length > 2) {
     d.stroke(0);
     d.line(
       orbiters[0].currentPosition().x,
