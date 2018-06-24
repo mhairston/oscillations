@@ -6,7 +6,7 @@ var sk = {
 var doLoop = true;
 var ds = Drift.Seedy;
 var dc = Drift.Cycles;
-var hw, hh, fr, gl = 0, col = 0, hue1 = 0;
+var hw, hh, fr, gl = 0, col = 0, hue1 = 0, r;
 var drawingColors, drawingLayer, orbiters;
 
 function setup() {
@@ -28,11 +28,11 @@ function setup() {
   //orbiters = OrbiterFactory.create(30, pal, drawingColors, layer);
   orbiters = [
     new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.74, 0.76, 0, 0, -150, -150),
+      0.1, 0.1, 0, 0, 300, 300),
     new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.96, 0.48, 0, 0, 150, 300),
+      0.05, 0.025, 0, 0, 200, 300),
     new Orbiter(loc, 10, col1, col1, drawingLayer,
-      0.5, 1, 0, TAU/4, 300, 150)
+      0.05, 0.1, 0, TAU/4, 300, 200)
   ];
   hue1 = rr(360);
   sat1 = rr(10,70);
@@ -40,7 +40,11 @@ function setup() {
 }
 
 function draw() {
+  r += 1;
   background(hue1,sat1,bri1);
+  translate(hw,hh);
+  rotate(r);
+  translate(-hw,-hh);
   updateAll();
 }
 
@@ -73,7 +77,7 @@ function updateAll() {
     item.render(true, true);
     d.push();
     drawChiaroscuro(d);
-    drawConnections(d);
+    //drawConnections(d);
     d.pop();
   });
   pop();
@@ -91,7 +95,6 @@ function drawConnections(d) {
     );
   }
   if (orbiters.length > 2) {
-    d.stroke(0);
     d.line(
       orbiters[0].currentPosition().x,
       orbiters[0].currentPosition().y,
@@ -103,12 +106,8 @@ function drawConnections(d) {
 
 function drawChiaroscuro(d) {
   if (orbiters.length > 2) {
-    var t = dc.seconds();
-    if (t % 16 < 0.2) {
-      col = (col === 0) ? 255 : 0;
-    }
-    d.noStroke();
-    d.fill(col,0.01);
+    d.stroke(255,0.1);
+    d.fill(0,0.01);
     d.triangle(
       orbiters[0].currentPosition().x,
       orbiters[0].currentPosition().y,
